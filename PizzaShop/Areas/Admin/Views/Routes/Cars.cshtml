@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PizzaShop.Areas.Admin.Models.Car>
+
+@{
+    ViewBag.Title = "Cars";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Cars</h2>
+
+<p>
+    @Html.ActionLink("New Car", "AddCar")
+</p>
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Consumption
+        </th>
+        <th>
+            KilometresDriven
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Consumption)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.KilometresDriven)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditCar", new { id=item.CarId }) |
+            @Html.ActionLink("Details", "CarDetail", new { id=item.CarId }) |
+            @Html.ActionLink("Delete", "DeleteCar", new { id=item.CarId })
+        </td>
+    </tr>
+}
+
+</table>
+<p>
+    @Html.ActionLink("Back", "Index")
+</p>

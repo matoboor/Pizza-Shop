@@ -1,0 +1,79 @@
+﻿@model PizzaShop.Models.Catalog.ProductOption
+
+@{
+    ViewBag.Title = "EditProductOption";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Edit Product Option</h2>
+
+<h3>Product: @Model.Product.Name | @Model.ProductId</h3>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("EditProductOption", "Products",
+                    FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Product Option</legend>
+        <h4>Option: @Model.Option.Name</h4>
+        @Html.HiddenFor(model => model.ProductId)
+        @Html.HiddenFor(model => model.ProductOptionId)
+        @Html.HiddenFor(model => model.OptionId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <legend>Values</legend>
+        @Html.ActionLink("Add Value","AddProductOptionValue",new {id = Model.ProductOptionId})
+        <table>
+            <tr>
+               <th>
+                   Value
+               </th>
+                <th>
+                   Name            
+               </th>
+               <th>
+                   Price
+               </th>
+               <th>
+                   Default
+               </th>
+            </tr>
+        @for (int i = 0; i < Model.Values.Count(); i++)
+        {
+            <tr>
+                <td>
+                    @Html.DropDownListFor(model => model.Values[i].ProductOptionValueId, new SelectList(ViewBag.OptionValues, "OptionValueId", "Name", Model.Values[i].OptionValueId))
+                    @Html.HiddenFor(model => model.Values[i].ProductOptionId)
+                    @Html.HiddenFor(model => model.Values[i].OptionValueId)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Values[i].Name)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Values[i].Price)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Values[i].Default)
+                </td>
+            </tr>
+        }
+        </table>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

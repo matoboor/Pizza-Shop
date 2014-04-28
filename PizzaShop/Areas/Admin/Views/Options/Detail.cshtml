@@ -1,0 +1,38 @@
+﻿@model PizzaShop.Models.Catalog.Option
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Detail</h2>
+
+<fieldset>
+    <legend>Option</legend>
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <legend>Values</legend>
+    <table>
+    @for (int i =0; i<Model.Values.Count(); i++)
+    {
+    <tr>
+        <td>
+        @Html.DisplayFor(model => Model.Values[i].Name)
+        </td>
+        <td>
+        <img src="@Url.Content(Model.Values[i].Image)", title=@Model.Values[i].Name, alt="Option Value", height=50, width=50 />
+        </td>
+
+    </tr>
+    }
+    </table>
+</fieldset>
+<p>
+    @if(User.IsInRole("Administrator"))
+    {
+    @Html.ActionLink("Edit", "Edit", new { id=Model.OptionId }) <text> | </text>
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>

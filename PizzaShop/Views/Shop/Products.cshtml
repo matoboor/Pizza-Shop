@@ -1,0 +1,40 @@
+﻿@model IEnumerable<PizzaShop.Models.Catalog.Product>
+
+@{
+    ViewBag.Title = "Katalóg";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.CategoryName</h2>
+<p>Produktov v kategórií: @Model.Count()</p>
+<hr />
+
+<table>  
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if (item.Images.Count > 0)
+            {
+            <img src="@Url.Content(item.Images.FirstOrDefault().Url)" height="100" width="100"/>
+            }
+        </td>
+        <td>
+            <b>
+            @Html.DisplayFor(modelItem => item.Name)
+            </b>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price),- Kč
+        </td>
+        <td>
+            <p><b>Popis: </b></p>
+            @Html.DisplayFor(modelItem => item.Description.Text)
+        </td>
+        <td>
+            @Html.ActionLink("Vložiť do košíku", "AddToCart", new { id = item.ProductId }, new { @class = "add_to_cart", @title ="Vložiť do košíku" })
+        </td>
+    </tr>
+}
+
+</table>

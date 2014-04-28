@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PizzaShop.Models.Catalog.Option>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Options</h2>
+
+<p>
+    @if (User.IsInRole("Administrator"))
+    {
+    @Html.ActionLink("Create New", "New")
+    }
+</p>
+<table>
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OptionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Detail", new { id=item.OptionId })
+            
+            @if (User.IsInRole("Administrator"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OptionId }) <text> | </text>
+                @Html.ActionLink("Delete", "Delete", new { id = item.OptionId })
+            }
+        </td>
+    </tr>
+}
+
+</table>

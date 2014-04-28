@@ -1,0 +1,89 @@
+﻿@model PizzaShop.Models.Catalog.Order
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Order</legend>
+
+    <div class="display-label">OrderStatusId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderStatusId)
+    </div>
+
+    <div class="display-label">User</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User)
+    </div>
+
+    <div class="display-label">FirstName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">LastName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">Mail</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mail)
+    </div>
+
+    <div class="display-label">Adress</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Adress)
+    </div>
+
+    <div class="display-label">Phone</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Phone)
+    </div>
+
+    <div class="display-label">Total</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Total)
+    </div>
+
+    <div class="display-label">Costs</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Costs)
+    </div>
+
+    <div class="display-label">DateAdded</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateAdded)
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Order Items</legend>
+    @foreach( var item in Model.Items)
+    {
+        <div class="test">
+        <b>Product:</b> @Html.DisplayFor(itm => item.Name) <br />
+        <b>  Price:</b>  @Html.DisplayFor(itm => item.Total) <br />
+        <b> Special Wish:</b> @Html.DisplayFor(itm => item.Wish)
+
+        <h5>Options:</h5>
+
+        @foreach (var opt in item.Options)
+        {
+            <b>@Html.DisplayFor(o => opt.Name):</b>@Html.DisplayFor(o => opt.Value)
+        }
+
+        </div>
+    }
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

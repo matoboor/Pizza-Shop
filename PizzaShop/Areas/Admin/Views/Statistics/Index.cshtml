@@ -1,0 +1,120 @@
+﻿@model PizzaShop.Areas.Admin.Models.StatisticsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<html>
+  <head>
+    <title>Statistics</title>
+  </head>
+  <body>
+    <h1>Statistics</h1>
+    <h3>Quick Report</h3>
+    
+    
+
+    <div id="QuickOrders">
+    <h1>Orders</h1>
+    Total Orders: @Model.Orders_total <br />
+    Complete Orders: @Model.Orders_complete<br />
+    NotComplete Orders: @Model.Orders_notComplete <br />
+    Total Orders This month: @Model.Orders_total_thisMonth<br />
+    Total Sales: @Model.Orders_totalPrice kč<br />
+    Total Sales This month: @Model.Orders_totalPrice_thisMonth kč <br />
+    Total Costs: @Model.Orders_totalCosts <br />
+    Total Costs This month: @Model.Orders_totalCostsThisMonth kč <br />
+    Total Profit: @Model.Orders_totalProfit <br />
+    Total Profit This month: @Model.Orders_totalProfitThisMonth kč <br />
+
+    <img src="@Url.Action("MyChart", new { type = "column", val = "QuickOrder" })" />
+    </div>
+
+    <div id="QuickRotues">
+    <h1>Routes</h1>
+    Total Routes: @Model.Routes_total <br />
+    Complete Routes: @Model.Routes_complete <br />
+    Planed Routes: @Model.Routes_planed <br />
+    On The Way: @Model.Routes_onTheWay <br />
+    Total Routes this month: @Model.Routes_total_thisMonth <br />
+    Total Distance: @Model.Routes_totalDistance km<br />
+    Total Duration: @Model.Routes_totalTime hours<br />
+   
+    Total Distance this month: @Model.Routes_total_distance_thisMonth km <br />
+    Total Duration this month: @Model.Routes_total_time_thisMonth hours<br />
+    Total Costs: @Model.Routes_Costs kč <br />
+    Total Costs this month: @Model.Route_CostsThisMonth kč <br />
+
+    <table>
+        <tr>
+            <th>
+                Car
+            </th>
+
+            <th>
+                Kilometres
+            </th>
+
+            <th>
+                Gasoline consumed
+            </th>
+        </tr>
+    
+    @foreach (var car in Model.cars)
+    {
+        <tr>
+            <td>
+                @car.Name
+            </td>
+
+            <td>
+                @car.KilometresDriven
+            </td>
+            <td>
+                @car.GetGasolineConsumed() litres
+            </td>
+        </tr>
+    }
+    </table>
+    </div>
+        <p>
+    
+    </p>
+    <div id="QuickProducts">
+    <h1>Products</h1>
+    Products: @Model.Products_total <br />
+    Total sold Products: @Model.Products_total_sold <br />
+    Total price of sold products: @Model.Products_total_sold_price <br />
+    
+    <table>
+        <tr>
+            <th>
+                Product
+            </th>
+
+            <th>
+                Sold
+            </th>
+        </tr>
+    
+    @for (var i = 0; i < Model.values["QuickProduct"].xValues.Count; i++)
+    {
+        <tr>
+            <td>
+                @Model.values["QuickProduct"].xValues[i] 
+            </td>
+
+            <td>
+                @Model.values["QuickProduct"].yValues[i]
+            </td>
+        </tr>
+    }
+    </table>
+    <img src="@Url.Action("MyChart", new { type ="bar", val="QuickProduct"})" />
+        
+    <img src="@Url.Action("MyChart", new { type = "pie", val = "QuickProduct" })" />
+    </div>
+    <div style="height:1000px"></div>
+  </body>
+</html>

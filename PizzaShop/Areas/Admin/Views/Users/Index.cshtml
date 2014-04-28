@@ -1,0 +1,64 @@
+﻿@model PizzaShop.Areas.Admin.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+<h2>Users</h2>
+
+<p>
+@if(User.IsInRole("Administrator"))
+{
+    @Html.ActionLink("Create User","Create")
+}
+</p>
+
+@{
+    WebGrid employers = new WebGrid(Model.Employers);
+    WebGrid customers = new WebGrid(Model.Customers);
+
+}
+
+
+<fieldset>
+<legend>Employers</legend>
+@employers.GetHtml(
+        mode: WebGridPagerModes.All,
+        firstText: "<< First",
+        previousText: "< Previous", nextText: "Next >",
+        lastText: "Last >>",
+   
+    columns: new[] {
+    employers.Column("UserName"),
+    employers.Column("Email"),
+    employers.Column("CreationDate"),
+    employers.Column("", header: "Roles", format: @<text>@foreach (var role in Roles.GetRolesForUser(item.UserName)) { if(!role.Equals("Employee")) {@role <text> </text> }}</text>),
+    employers.Column("", header: "Action", format: @<text>@Html.ActionLink("Detail","Detail", new {name = item.UserName}) @if(User.IsInRole("Administrator")){<text> | </text> @Html.ActionLink("Edit","Edit", new {name = item.UserName}) <text> | </text> @Html.ActionLink("Delete","Delete", new {name = item.UserName})}</text>)
+    })
+</fieldset>
+
+<fieldset>
+<legend>Customers</legend>
+@customers.GetHtml(
+        mode: WebGridPagerModes.All,
+        firstText: "<< First",
+        previousText: "< Previous", nextText: "Next >",
+        lastText: "Last >>",
+
+    columns: new[] {
+    employers.Column("UserName"),
+    employers.Column("Email"),
+    employers.Column("CreationDate"),
+    employers.Column("", header: "Roles", format: @<text>@foreach (var role in Roles.GetRolesForUser(item.UserName)) {@role <text> </text> }</text>),
+    employers.Column("", header: "Action", format: @<text>@Html.ActionLink("Detail","Detail", new {name = item.UserName}) @if(User.IsInRole("Administrator")) {<text> | </text> @Html.ActionLink("Edit","Edit", new {name = item.UserName}) <text> | </text> @Html.ActionLink("Delete","Delete", new {name = item.UserName})}</text>)
+    })
+
+</fieldset>
+
+
+
+

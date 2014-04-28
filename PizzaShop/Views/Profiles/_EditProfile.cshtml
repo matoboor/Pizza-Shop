@@ -1,0 +1,49 @@
+﻿@model PizzaShop.Models.Profile
+           
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Profil</legend>
+
+        @Html.HiddenFor(model => model.ProfileId)
+        @Html.HiddenFor(model => model.Owner)
+
+        <div class="editor-label">
+            Adresa
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Address)
+            @Html.ValidationMessageFor(model => model.Address)
+        </div>
+
+        <div class="editor-label">
+            Meno
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+        <div class="editor-label">
+            Priezvisko
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+        
+        <div class="editor-label">
+            Novinky
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.News)
+            @Html.ValidationMessageFor(model => model.News)
+        </div>
+
+
+        <p>
+            <input type="submit" value="Uložiť" />
+        </p>
+    </fieldset>
+}
+

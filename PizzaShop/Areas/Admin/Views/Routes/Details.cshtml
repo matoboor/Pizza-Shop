@@ -1,0 +1,141 @@
+﻿@model PizzaShop.Areas.Admin.Models.Route
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Detail</h2>
+
+<fieldset>
+    <legend>Route</legend>
+
+
+        @Html.HiddenFor(model => model.RouteStatusId)
+
+    <div class="display-label">Route Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RouteId)
+    </div>
+
+    <div class="display-label">Duration</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Duration)
+    </div>
+
+    <div class="display-label">Distance</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Distance)
+    </div>
+
+    <div class="display-label">Owner</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Owner)
+    </div>
+
+    <div class="display-label">DateAdded</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateAdded)
+    </div>
+
+    <div class="display-label">Car Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Car)
+    </div>
+
+    <div class="display-label">Costs in litres</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Costs) <text> l</text>
+    </div>
+
+    <div class="display-label">Costs in money</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TotalCosts) <text> kč</text>
+    </div>
+
+    <div class="display-label">Total orders costs</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrdersCosts) <text> kč</text>
+    </div>
+
+    <div class="display-label">Total orders sum</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrdersTotal) <text> kč</text>
+    </div>
+
+    <div class="display-label">OrdersProfit</div>
+    <div class="display-field">
+       @Html.DisplayFor(model => model.OrdersProfit) <text> kč</text>
+    </div>
+
+    <div class="display-label">Total Profit</div>
+    <div class="display-field">
+       @Html.DisplayFor(model => model.TotalProfit) <text> kč</text>
+    </div>
+
+    <div class="display-label">Status</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status.Name)
+    </div>
+</fieldset>
+<fieldset>
+<legend>Route Points</legend>
+
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+
+        <th>
+            Address
+        </th>
+
+        <th>
+            Order
+        </th>
+            
+        <th>
+            Distance
+        </th>
+        
+        <th>
+            Duration
+        </th>
+    </tr>
+
+    @foreach (var point in Model.RoutePoints)
+    {
+        <tr>
+            <td>
+                @point.RoutePointId
+            </td>
+
+            <td>
+                @point.Address
+            </td>
+
+            <td>
+                @if (point.OrderId != 0)
+                {
+                    @Html.ActionLink(point.OrderId.ToString(), "Detail", "Orders", new { id = point.OrderId }, new { target = "_blank" })
+                }
+                
+            </td>
+            <td>
+                @point.Distance
+            </td>
+            <td>
+                @point.Duration
+            </td>
+        </tr>
+    }
+</table>
+</fieldset>
+<p>
+    @if (User.IsInRole("Administrator") || User.IsInRole("Deliverer"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.RouteId }) <text> | </text>
+    }
+    @Html.ActionLink("Back to List", "All")
+</p>

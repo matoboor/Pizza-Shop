@@ -1,0 +1,60 @@
+﻿@model MembershipUser
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Edit</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+        <fieldset>
+        <div class="editor-label">
+            User
+        </div>
+        <div class="editor-field">
+            <b>@Model.UserName</b>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comment)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comment)
+            @Html.ValidationMessageFor(model => model.Comment)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Role")
+        </div>
+        @if (!Roles.IsUserInRole(Model.UserName, "Customer"))
+        {
+        <div class="editor-field">
+            @Html.DropDownList("Role", ViewBag.roles as SelectList)
+        </div>
+        }
+        else {@Html.Hidden("Role","Customer")<tex>Customer</tex>}
+        </fieldset>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+        <p>
+            @if (User.Identity.Name.Equals(Model.UserName, StringComparison.OrdinalIgnoreCase))
+                {
+                     @Html.ActionLink("Change Password", "ChangePassword")
+                }
+        </p>    
+        <p>
+            @Html.ActionLink("Back","Index")
+        </p>
+}
+        

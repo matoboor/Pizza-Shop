@@ -1,0 +1,90 @@
+﻿@model PizzaShop.Models.Catalog.Order
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Detail</h2>
+
+<fieldset>
+    <legend>Order</legend>
+
+        OrderId
+
+       <b> @Html.DisplayFor(model => model.OrderId)</b>
+
+    <div class="display-label">User</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User)
+    <legend>Contact</legend>
+    </div>
+        <h4>Name</h4>
+       <b>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</b>
+    
+    <div class="display-label">Adress</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Adress)
+    </div>
+
+    <div class="display-label">Mail</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mail)
+    </div>
+
+    <div class="display-label">Phone</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Phone)
+    </div>
+
+    <div class="display-label">Status</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderStatus.Name)
+    </div>
+
+    <div class="display-label">Total</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Total)
+    </div>
+
+    <div class="display-label">Costs</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Costs)
+    </div>
+
+    <div class="display-label">Profit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Profit)
+    </div>
+
+    <div class="display-label">DateAdded</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateAdded)
+    </div>
+
+    <legend>Order Items</legend>
+    @foreach( var item in Model.Items)
+    {
+        <div class="test">
+        <b>Product:</b> @Html.DisplayFor(itm => item.Name) <br />
+        <b>  Price:</b>  @Html.DisplayFor(itm => item.Total) <br />
+        <b> Special Wish:</b> @Html.DisplayFor(itm => item.Wish)
+
+        <h5>Options:</h5>
+
+        @foreach (var opt in item.Options)
+        {
+            <b>@Html.DisplayFor(o => opt.Name):</b>@Html.DisplayFor(o => opt.Value)
+        }
+
+        </div>
+    }
+</fieldset>
+<p>
+    
+    @if (User.IsInRole("Administrator") || User.IsInRole("Vendor"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.OrderId }) <text> | </text>
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>

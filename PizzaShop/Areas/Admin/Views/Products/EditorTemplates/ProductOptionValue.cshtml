@@ -1,0 +1,23 @@
+﻿@model PizzaShop.Models.Catalog.ProductOptionValue
+<div>
+                   
+                    @Html.HiddenFor(model => model.ProductOptionId)
+                    @Html.HiddenFor(model => model.ProductOptionValueId)
+                    <tr>
+                <td>
+                 @Html.DropDownListFor(model => model.OptionValueId, new SelectList(ViewBag.OptionValues, "OptionValueId", "Name", Model.OptionValueId))
+                </td>
+                <td>
+                @Html.EditorFor(model => model.Name)
+                </td>
+                <td>
+                @Html.EditorFor(model => model.Price)
+                </td>
+                <td>
+                @Html.EditorFor(model => model.Default)
+                </td>
+                <td>
+                @Html.ActionLink("Delete", "DeleteProductOptionValue", new { id = Model.ProductOptionValueId })
+                </td>
+             </tr>
+</div>

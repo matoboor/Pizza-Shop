@@ -1,0 +1,62 @@
+﻿@model PizzaShop.Models.Catalog.Product
+
+@{
+    ViewBag.Title = "Vložiť do košíka";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Vložiť do košíka</h2>
+
+<h2>@Model.Name</h2>
+<p>
+@foreach (var image in Model.Images)
+{
+    <img src="@Url.Content(image.Url)" height="150" width="150"/>
+}
+</p>
+<h3><strong>Cena: @Model.Price,- Kč</strong></h3>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+<fieldset>
+    <p>
+    
+    </p>
+    <legend>Popis</legend>
+    <p>@Model.Description.Text</p>
+   
+   @if (Model.Options.Count > 0)
+   {
+   <fieldset>
+    <legend>Možnosti</legend>
+     <div class="center">
+    @foreach (var option in Model.Options)
+    {
+        <text><p><b>@option.Name:</b></p><br /></text>
+               foreach (var value in option.Values)
+               {
+             <div class="option">
+            <img src="@Url.Content(value.Value.Image)" width="100" height="100" />
+            <p>@Html.RadioButton(option.Name, value.ProductOptionValueId, value.Default)<text>@value.Name</text> @if (value.Price > 0)
+                                                                                                                 {<text> + <b>@value.Price,- Kč</b></text>}
+                                                                                                              </p>
+                                                                                                              </div>
+               }
+        <text><br /></text>
+    }
+    </div>
+    </fieldset>
+   }
+    <fieldset>
+    <legend>Špeciálne prianie</legend>
+        @Html.Label("Special wish")
+        @Html.Editor("Comment")
+    </fieldset>
+    <p>
+        <input type="submit" value="Vlož do košíka" />
+    </p>
+    </fieldset>
+    <p>@Html.ActionLink("<<Späť","Products",new {category=Model.Category.Name})</p>
+
+
+}

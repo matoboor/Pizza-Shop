@@ -1,0 +1,18 @@
+﻿@model PizzaShop.Models.Catalog.ProductImage
+<tr>
+                @Html.HiddenFor(model => model.ProductImageId)
+                @Html.HiddenFor(model => model.ProductId)
+                @Html.HiddenFor(model => model.Url)
+                <td>
+                <img src="@Url.Content(Model.Url)" width="50" height="50" />
+                </td>
+                <td>
+                @Html.EditorFor(model => model.Title)
+                </td>
+                <td>
+                <input type="file" name="file" id="file" />
+                </td>
+                <td>
+                @Html.ActionLink("Delete", "DeleteProductImage", new { id = Model.ProductImageId })
+                </td>
+</tr>

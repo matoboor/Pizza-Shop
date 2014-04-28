@@ -1,0 +1,92 @@
+﻿@model IEnumerable<PizzaShop.Areas.Admin.Models.Route>
+
+@{
+    ViewBag.Title = "All";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>All Saved Routes</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Index")
+</p>
+<table>
+    <tr>
+        <th>
+            RouteId
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Orders
+        </th>
+        <th>
+            Duration
+        </th>
+        
+        <th>
+            Distance
+        </th>
+        <th>
+            Owner
+        </th>
+
+        <th>
+            Car Id
+        </th>
+
+        <th>
+            DateAdded
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RouteId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status.Name)
+        </td>
+        <td>
+            @{var t = item.RoutePoints.Count - 1; @t}
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Distance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Owner)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Car)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateAdded)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.RouteId })
+            @if (User.IsInRole("Administrator") || User.IsInRole("Deliverer"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Edit", "Edit", new { id = item.RouteId }) 
+            }
+            @if (User.IsInRole("Administrator"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Delete", "Delete", new { id = item.RouteId })
+            }
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Back", "Index")
+</p>

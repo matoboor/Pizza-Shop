@@ -1,0 +1,29 @@
+﻿@model PizzaShop.Models.Catalog.OrderStatus
+
+@{
+    ViewBag.Title = "OrderStatusDetail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>OrderStatusDetail</h2>
+
+<fieldset>
+    <legend>OrderStatus</legend>
+
+    <div class="display-label">ID</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderStatusId)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+</fieldset>
+<p>
+    @if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Edit", "EditOrderStatus", new { id = Model.OrderStatusId }) <text> | </text>
+    }
+    @Html.ActionLink("Back to List", "Status")
+</p>

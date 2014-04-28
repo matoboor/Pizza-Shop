@@ -1,0 +1,58 @@
+﻿@model PizzaShop.Models.Catalog.ShoppingCart
+@if (Model.Items.Count > 0)
+{
+<table>
+    <tr>
+        <th>
+            Product
+        </th>
+        <th>
+            Možnosti
+        </th>
+        <th>
+            Špeciálne prianie
+        </th>
+        <th>
+            Cena
+        </th>
+        <th></th>
+    </tr>
+@{int i = 0;}
+@foreach (var item in Model.Items)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.Name)
+        </td>
+        <td>
+            <ul>
+            @foreach (var option in item.Options)
+            {
+                <li>@option.Option.Name: -@option.Value.Name</li>
+            }
+            </ul>
+        </td>
+        <td>
+            @Html.DisplayFor(modeItem => item.Comment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.ActionLink("Odstráň", "RemoveFromCart","Shop", new { id = i },null)
+        </td>
+    </tr>
+       i++;
+}
+
+</table>
+<div>
+    Suma: @Model.Total
+</div>
+}
+else
+{
+    <div>
+        Košík je prázdny
+    </div>
+}

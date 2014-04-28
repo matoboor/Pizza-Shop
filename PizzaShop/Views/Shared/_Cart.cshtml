@@ -1,0 +1,13 @@
+﻿@model PizzaShop.Models.Catalog.ShoppingCart
+           
+@if (Model.Items.Count() > 0)
+{
+    <text>Items in Cart: <strong>@Model.Items.Count()</strong></text>
+    <text>Price: <strong>@Model.Total</strong></text> <br />
+    @Html.ActionLink("-", "Checkout", "Shop", null, new { @class = "checkout" })
+}
+else
+{
+    <text>Váš košík je prázdny</text>
+}
+

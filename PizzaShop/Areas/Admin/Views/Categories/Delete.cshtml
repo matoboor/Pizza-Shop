@@ -1,0 +1,32 @@
+﻿@model PizzaShop.Models.Catalog.Category
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Delete category</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<em>Delete this category causes the deletion of all products in category!!!</em>
+Number of affected products: @ViewBag.products
+<fieldset>
+    <legend>Category</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Image</div>
+    <div class="display-field">
+        <img src="@Url.Content(Model.Image.Url)" title="@Model.Name" width="50" height="50" />
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

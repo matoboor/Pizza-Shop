@@ -1,0 +1,18 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Odoslané";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Objednávka odoslaná</h2>
+
+Vaša objednávka bola odoslaná do našeho systému pod kódom <b>ID: @Model</b> <br />
+
+Vaše objednávky možete sledovať vo @Html.ActionLink("Vašom profile","Index","Profiles",null,null)
+
+Ďakujeme za nákup!
+
+@Html.ActionLink("Do obchodu", "Products")
+
+

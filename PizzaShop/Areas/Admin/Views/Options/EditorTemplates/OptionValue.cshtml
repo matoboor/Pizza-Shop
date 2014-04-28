@@ -1,0 +1,11 @@
+﻿@model PizzaShop.Models.Catalog.OptionValue
+<div>
+@Html.HiddenFor(x => x.OptionValueId)
+@Html.HiddenFor(x => x.OptionId)
+@Html.HiddenFor(x => x.Image)
+@Html.TextBoxFor(x => x.Name)
+@Html.ActionLink("Delete","DeleteOptionValue", new {id=Model.OptionValueId})
+<img src="@Url.Content(Model.Image)", title="@Model.Name", alt="Option Value", height="50", width="50" />
+<input type="file" name="file" />
+
+</div>

@@ -1,0 +1,145 @@
+﻿@model PizzaShop.Models.Catalog.Order
+
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Checkout</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVYz-DOY0YJsoABvCWr5vcjq3nRDnW7ZU&sensor=false">
+</script>
+
+<script type="text/javascript">
+    var geocoder;
+    var map;
+    var latlng;
+    var marker;
+    var infowindow;
+
+    function InitializeMap() {
+        geocoder = new google.maps.Geocoder();
+        infowindow = new google.maps.InfoWindow();
+        var adr = 'Povazska Bystrica';
+
+        geocoder.geocode({ 'address': adr }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+
+                latlng = results[0].geometry.location;
+                var myOptions =
+            {
+                zoom: 15,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+                map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+                Marker(adr);
+
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+
+        });
+    }
+
+
+    function Marker(address) {
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+
+                latlng = results[0].geometry.location;
+                map.setCenter(latlng);
+                map.setZoom(18);
+                marker = new google.maps.Marker
+                ({
+                    title: address,
+                    position: latlng,
+                    map: map
+                });
+                infowindow.setContent("<p>Je to správna adresa? </ p> <p><b>" + marker.title + "</b></p>");
+                infowindow.open(map, marker);
+
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+
+        });
+
+    }
+
+
+    $(document).ready(function () {
+        InitializeMap();
+        $("#Adress").blur(function (evt) {
+
+            var address = jQuery.trim($("#Adress").val());
+            if (address.length < 1)
+                return;
+            Marker(address);
+        });
+    });
+</script>
+<fieldset>
+    <legend>Vaša objednávka</legend>
+    @Html.Partial("CartDetail",/*PizzaShop.Models.Catalog.Cart.Instance*/(PizzaShop.Models.Catalog.ShoppingCart)ViewBag.cart)
+</fieldset>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Dodacie údaje</legend>
+        <div id='googleMap' ></div>
+        <div class="editor-label">
+            Meno
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+        <div class="editor-label">
+            Priezvisko
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        
+
+        <div class="editor-label">
+            Adresa
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Adress)
+            @Html.ValidationMessageFor(model => model.Adress)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Mail)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Mail)
+            @Html.ValidationMessageFor(model => model.Mail)
+        </div>
+
+        <div class="editor-label">
+            Telefón
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Phone)
+            @Html.ValidationMessageFor(model => model.Phone)
+        </div>
+   
+        <p>
+            <input type="submit" value="Odoslať objednávku" />
+        </p>
+        
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Späť na nákup", "Products")
+</div>

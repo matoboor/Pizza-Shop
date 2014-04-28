@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PizzaShop.Models.Catalog.OrderStatus>
+
+@{
+    ViewBag.Title = "Statuses";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Order statuses</h2>
+
+<p>
+    @Html.ActionLink("Create New", "AddOrderStatus")
+</p>
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "OrderStatusDetail", new { id=item.OrderStatusId })
+            @if (User.IsInRole("Administrator"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Edit", "EditOrderStatus", new { id = item.OrderStatusId }) <text> | </text>
+                @Html.ActionLink("Delete", "DeleteOrderStatus", new { id = item.OrderStatusId })
+            }
+        </td>
+    </tr>
+}
+
+</table>
+<p>
+@Html.ActionLink("Back To Orders", "Index")
+</p>

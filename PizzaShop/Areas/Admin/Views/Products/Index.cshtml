@@ -1,0 +1,68 @@
+﻿@model IEnumerable<PizzaShop.Models.Catalog.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Create New", "New")
+    }
+</p>
+<table>
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Category
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductId)
+        </td>
+        <td>
+            @if (item.Images.Count > 0)
+            {
+            <img src="@Url.Content(item.Images.FirstOrDefault().Url)" height="50" width="50"/>
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Detail", new { id=item.ProductId })
+            @if (User.IsInRole("Administrator"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) <text> | </text>
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
+            }
+        </td>
+    </tr>
+}
+
+</table>

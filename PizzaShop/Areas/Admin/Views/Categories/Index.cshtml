@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PizzaShop.Models.Catalog.Category>
+
+@{
+    ViewBag.Title = "Categories";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Categories</h2>
+
+<p>
+    @if (User.IsInRole("Administrator"))
+    {
+    @Html.ActionLink("Add new category", "New")
+    }
+</p>
+<table>
+    <tr>
+        <th>
+            Image
+        </th>
+        <th>
+            ID
+        </th>
+        <th>
+            Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <img src="@Url.Content(item.Image.Url)" title="@item.Name" width="50" height="50" />
+        </td>
+        <td>
+           @Html.DisplayFor(modelItem =>item.CategoryId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Detail", new { id=item.CategoryId }) 
+            @if (User.IsInRole("Administrator"))
+            {
+                <text> | </text>@Html.ActionLink("Edit", "Edit", new { id=item.CategoryId }) <text>|</text>
+                @Html.ActionLink("Delete", "Delete", new { id=item.CategoryId })
+            }
+        </td>
+    </tr>
+}
+
+</table>

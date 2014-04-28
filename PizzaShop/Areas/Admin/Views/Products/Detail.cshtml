@@ -1,0 +1,95 @@
+﻿@model PizzaShop.Models.Catalog.Product
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Detail</h2>
+
+<fieldset>
+    <legend>Product</legend>
+    
+    <div class="display-label">ID</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ProductId)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Price</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">Costs</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Costs)
+    </div>
+
+    <div class="display-label">Weight</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Weight)
+    </div>
+
+    <div class="display-label">Category</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Category.Name)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description.Text)
+    </div>
+    <legend>Images</legend>
+    <div class="display-label">Images</div>
+    @foreach (var item in Model.Images)
+    {
+        
+            <img src="@Url.Content(item.Url)" title="@item.Title" height="50", width="50" />
+        
+    }
+    <legend>Options</legend>
+
+    @foreach (var item in Model.Options)
+    {
+        
+        <table>
+            <tr>
+                <th>
+                   @Html.DisplayFor(model => item.Name)            
+               </th>
+               <th>
+                   Price
+               </th>
+               <th>
+                   Default
+               </th>
+            </tr>
+            @foreach(var value in item.Values)
+            {
+             <tr>
+                <td>
+                @Html.DisplayFor(model => value.Name)
+                </td>
+                <td>
+                @Html.DisplayFor(model => value.Price)
+                </td>
+                <td>
+                @Html.DisplayFor(model => value.Default)
+                </td>
+             </tr>
+            }
+            </table>
+    }
+</fieldset>
+<p>
+    @if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId }) <text> | </text>
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>

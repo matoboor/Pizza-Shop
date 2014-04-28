@@ -1,0 +1,30 @@
+﻿@model MembershipUser
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Detail</h2>
+
+Name: @Model.UserName <br />
+Email: @Model.Email <br />
+Comment: @Model.Comment <br />
+Create: @Model.CreationDate <br />
+Roles:
+@foreach (var role in Roles.GetRolesForUser(Model.UserName))
+{
+     <text>* </text>@role
+} <br />
+Orders: @ViewBag.orders <br />
+Routes: @ViewBag.routes
+
+<p>
+@if (User.Identity.Name.Equals(Model.UserName, StringComparison.OrdinalIgnoreCase))
+{
+    @Html.ActionLink("Change Password", "ChangePassword")
+}
+</p>
+<p>
+@Html.ActionLink("Back", "Index") @if(User.IsInRole("Administrator")){<text> | </text>@Html.ActionLink("Edit", "Edit", new { name = Model.UserName })}
+</p>

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PizzaShop.Areas.Admin.Models.RouteStatus>
+
+@{
+    ViewBag.Title = "Statuses";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Statuses</h2>
+
+<p>
+        @Html.ActionLink("Create New", "AddStatus")
+</p>
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RouteStatusId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditRouteStatus", new { id=item.RouteStatusId }) |
+            @Html.ActionLink("Delete", "DeleteRouteStatus", new { id=item.RouteStatusId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Back", "Index")
+</p>

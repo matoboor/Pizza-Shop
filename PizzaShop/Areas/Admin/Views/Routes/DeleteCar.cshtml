@@ -1,0 +1,44 @@
+﻿@model PizzaShop.Areas.Admin.Models.Car
+
+@{
+    ViewBag.Title = "DeleteCar";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>DeleteCar</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Car</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Type)
+    </div>
+
+    <div class="display-label">Consumption</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Consumption)
+    </div>
+
+    <div class="display-label">Price For Liter</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PriceForLiter)
+    </div>
+
+    <div class="display-label">KilometresDriven</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.KilometresDriven)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Cars")
+    </p>
+}

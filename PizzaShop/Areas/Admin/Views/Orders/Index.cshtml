@@ -1,0 +1,100 @@
+﻿@model IEnumerable<PizzaShop.Models.Catalog.Order>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Orders</h2>
+
+<p>
+    @if (User.IsInRole("Administrator"))
+    {
+    @Html.ActionLink("Manage Order Statuses", "Status")
+    }
+</p>
+<p>
+    @if (User.IsInRole("Administrator") || User.IsInRole("Vendor"))
+    {
+    @Html.ActionLink("Create New", "Create")
+    }
+</p>
+
+@{
+    WebGrid orders = new WebGrid(Model);
+    WebGrid NewOrders = new WebGrid(Model.Where(o => o.OrderStatus.Name.Equals("Pending")));
+}
+
+<fieldset>
+<legend>New Orders</legend>
+@NewOrders.GetHtml(
+        mode: WebGridPagerModes.All,
+        firstText: "<< First",
+        previousText: "< Previous", nextText: "Next >",
+        lastText: "Last >>",
+
+    columns: new[] {
+    NewOrders.Column("OrderId"),
+    NewOrders.Column("OrderStatus.Name",header: "Status"),
+    NewOrders.Column("User"),
+    NewOrders.Column("",header: "Name", format: @<text>@item.FirstName  @item.LastName</text>,canSort:true),
+    NewOrders.Column("Mail"),
+    NewOrders.Column("Adress"),
+    NewOrders.Column("Phone"),
+    NewOrders.Column("Total"),
+    NewOrders.Column("DateAdded",format: @<text>@item.DateAdded.ToShortDateString()</text>
+),
+    NewOrders.Column("", header: "Action", format: @<text>@if(User.IsInRole("Administrator") || User.IsInRole("Vendor") || User.IsInRole("Deliverer"))
+            {
+                @Html.ActionLink("Proceed", "Proceed", new { id=item.OrderId }) <text> | </text>
+                @Html.ActionLink("Delete","Delete", new {id = item.OrderId}) <text> | </text>
+            }
+            
+            @Html.ActionLink("Details", "Detail", new { id=item.OrderId })
+            
+            @if (User.IsInRole("Administrator") || User.IsInRole("Vendor"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) 
+            }
+            
+            </text>)
+    })
+ </fieldset>
+
+<fieldset>
+<legend>All Orders</legend>
+@orders.GetHtml(
+        mode: WebGridPagerModes.All,
+        firstText: "<< First",
+        previousText: "< Previous", nextText: "Next >",
+        lastText: "Last >>",
+
+    columns: new[] {
+    orders.Column("OrderId"),
+    orders.Column("OrderStatus.Name",header: "Status"),
+    orders.Column("User"),
+    orders.Column("",header: "Name", format: @<text>@item.FirstName  @item.LastName</text>,canSort:true),
+    orders.Column("Mail"),
+    orders.Column("Adress"),
+    orders.Column("Phone"),
+    orders.Column("Total"),
+    orders.Column("DateAdded",format: @<text>@item.DateAdded.ToShortDateString()</text>
+),
+    orders.Column("", header: "Action", format: @<text>@if(User.IsInRole("Administrator") || User.IsInRole("Vendor") || User.IsInRole("Deliverer"))
+            {
+                @Html.ActionLink("Proceed", "Proceed", new { id=item.OrderId }) <text> | </text>
+                @Html.ActionLink("Delete","Delete", new {id = item.OrderId}) <text> | </text>
+            }
+            
+            @Html.ActionLink("Details", "Detail", new { id=item.OrderId })
+            
+            @if (User.IsInRole("Administrator") || User.IsInRole("Vendor"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) 
+            }
+            
+            </text>)
+    })
+ </fieldset>

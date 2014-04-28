@@ -1,0 +1,47 @@
+﻿@model PizzaShop.Areas.Admin.Models.Car
+
+@{
+    ViewBag.Title = "CarDetail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>CarDetail</h2>
+
+<fieldset>
+    <legend>Car</legend>
+    
+    <div class="display-label">Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CarId)
+    </div>
+
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Type)
+    </div>
+
+    <div class="display-label">Consumption</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Consumption)
+    </div>
+
+    <div class="display-label">Price For Liter</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PriceForLiter)
+    </div>
+
+    <div class="display-label">KilometresDriven</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.KilometresDriven)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "EditCar", new { id=Model.CarId }) |
+    @Html.ActionLink("Back to List", "Cars")
+</p>

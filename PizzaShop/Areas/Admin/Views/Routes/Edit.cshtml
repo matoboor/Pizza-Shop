@@ -1,0 +1,102 @@
+﻿@model PizzaShop.Areas.Admin.Models.Route
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Edit</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+<fieldset>
+    <legend>Route</legend>
+
+    <div class="display-label">Route Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RouteId)
+    </div>
+
+    <div class="display-label">Duration</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Duration)
+    </div>
+
+    <div class="display-label">Distance</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Distance)
+    </div>
+
+    <div class="display-label">Owner</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Owner)
+    </div>
+
+    <div class="display-label">DateAdded</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateAdded)
+    </div>
+    <div class="editor-field">
+            @Html.DropDownListFor(model => model.RouteStatusId, ViewBag.Statuses as SelectList)
+            @Html.ValidationMessageFor(model => model.RouteStatusId)
+        </div>
+</fieldset>
+<fieldset>
+<legend>Route Points</legend>
+
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+
+        <th>
+            Address
+        </th>
+
+        <th>
+            Order
+        </th>
+            
+        <th>
+            Distance
+        </th>
+        
+        <th>
+            Duration
+        </th>
+    </tr>
+
+    @foreach (var point in @Model.RoutePoints)
+    {
+        <tr>
+            <td>
+                @point.RoutePointId
+            </td>
+
+            <td>
+                @point.Address
+            </td>
+
+            <td>
+                @Html.ActionLink(point.OrderId.ToString(), "Detail", "Orders", new { id = point.OrderId }, new { target = "_blank" })
+            </td>
+            <td>
+                @point.Distance
+            </td>
+            <td>
+                @point.Duration
+            </td>
+        </tr>
+    }
+</table>
+<p>
+   <input type="submit" value="Save" />
+</p>
+</fieldset>
+}
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.RouteId }) |
+    @Html.ActionLink("Back to List", "All")
+</p>

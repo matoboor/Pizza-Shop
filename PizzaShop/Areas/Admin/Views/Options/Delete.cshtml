@@ -1,0 +1,40 @@
+﻿@model PizzaShop.Models.Catalog.Option
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Delete Option</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<p><b>This may cause deletion of all Product options associated with this option!!!</b></p>
+<fieldset>
+    <legend>Option</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <legend>Values</legend>
+    <table>
+    @for (int i =0; i<Model.Values.Count(); i++)
+    {
+    <tr>
+        <td>
+        @Html.DisplayFor(model => Model.Values[i].Name)
+        </td>
+        <td>
+        <img src="@Url.Content(Model.Values[i].Image)", title=@Model.Values[i].Name, alt="Option Value", height=50, width=50 />
+        </td>
+
+    </tr>
+    }
+    </table>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

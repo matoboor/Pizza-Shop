@@ -1,0 +1,84 @@
+﻿@model PizzaShop.Models.Catalog.Order
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail objednávky</h2>
+
+<fieldset>
+    <legend>Obejdnávka</legend>
+
+        OrderId
+
+       <b> @Html.DisplayFor(model => model.OrderId)</b>
+
+    <div class="display-label">Zákazník</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User)
+    <legend>Contact</legend>
+
+    </div>
+        <h4>Meno</h4>
+       <b>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</b>
+    
+    <div class="display-label">Adresa</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Adress)
+    </div>
+
+    <div class="display-label">Mail</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mail)
+    </div>
+
+    <div class="display-label">Telefón</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Phone)
+    </div>
+
+    <div class="display-label">Status</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderStatus.Name)
+    </div>
+
+    <div class="display-label">Suma</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Total)
+    </div>
+
+    <div class="display-label">Dátum</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateAdded)
+    </div>
+
+    
+    <legend>Položky objednávky</legend>
+    @foreach( var item in Model.Items)
+    {   <fieldset>
+        <div class="test">
+        <b>Product:</b> @Html.DisplayFor(itm => item.Name) <br />
+        <b>  Cena:</b>  @Html.DisplayFor(itm => item.Total) <br />
+        <b> Prianie:</b> @Html.DisplayFor(itm => item.Wish)
+
+        <h5>Možnosti:</h5>
+
+        @foreach (var opt in item.Options)
+        {
+            <b>@Html.DisplayFor(o => opt.Name):</b>@Html.DisplayFor(o => opt.Value)
+        }
+
+        </div>
+        </fieldset>
+    }
+    
+</fieldset>
+<p>
+    
+    @if (User.IsInRole("Administrator") || User.IsInRole("Vendor"))
+    {
+        @Html.ActionLink("Upraviť", "Edit", new { id = Model.OrderId }) <text> | </text>
+    }
+    @Html.ActionLink("Späť", "Index")
+</p>

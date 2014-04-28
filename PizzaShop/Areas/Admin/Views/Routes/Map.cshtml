@@ -1,0 +1,192 @@
+﻿@model IList<PizzaShop.Models.Catalog.Order>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVYz-DOY0YJsoABvCWr5vcjq3nRDnW7ZU&sensor=false">
+</script>
+
+
+
+<script type="text/javascript">
+
+    //Model Route Obejct
+
+    var counter = 0;
+    var adresses = [];
+    var waypoints = [];
+    var markers = [];
+    var route;
+    var dist = 0;
+    var dura = 0;
+
+    var directionsDisplay;
+    var directionsService;
+    var geocoder;
+    var map;
+    var latlng;
+
+    // initialize geocoder, directions Sercice and Display, and set map center to start location
+    function InitializeMap() {
+    geocoder = new google.maps.Geocoder();
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsService = new google.maps.DirectionsService();
+    homeAddress = document.getElementById("address").value;
+    codeAddress(homeAddress, function (result) {
+        this.latlng = result;
+    });
+    setTimeout(Map, 1500);
+}
+
+// Function to add Marker on adress in argument, and add adress to waipoints
+  function AddMarker(adress, title) {
+      codeAddress(adress, function (result) {
+          marker = new google.maps.Marker({
+              position: result,
+              title: title,
+              map: map
+          });
+          markers.push(marker);
+          waypoints.push({ location: adress.toString() });
+          adresses.push(adress.toString());
+
+          // jquery animations and efects
+          document.getElementById("points").innerHTML += "<div id='point-" + title + "'>" + title + " : " + adress + "</div></br>";
+          counter = counter + 1;
+          $("#point-" + title).animate({
+              fontSize: "1.15em",
+              marginLeft: "0.1in"
+          }, 400);
+
+          // if is route calculated yet, recalc
+          if (route != null) { calcRoute(); }
+          else {
+              map.setCenter(result);
+              map.setZoom(17);
+          }
+
+      });
+  }
+
+//fit all markers on map
+function FitMap() {
+    var bound = new google.maps.LatLngBounds();
+    for (var i in markers) {
+        bound.extend(markers[i].getPosition());
+    }
+    // Now set the bounds for the map
+    map.fitBounds(bound);
+}
+
+
+//initialize map object
+function Map() {
+    var myOptions =
+            {
+                zoom: 13,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+            directionsDisplay.setMap(map);
+            directionsDisplay.setPanel(document.getElementById("directionpanel"));
+}
+
+//calculate route from waipoints
+function calcRoute() {
+    if (markers.length > 0) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+
+        var start = document.getElementById("address").value;
+        var end = start;
+        var request = {
+            origin: start,
+            destination: end,
+            waypoints: waypoints,
+            travelMode: google.maps.DirectionsTravelMode.DRIVING,
+            optimizeWaypoints: true
+        };
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+                route = response.routes[0];
+                var tmp_route = response.routes[0];
+                dist = 0;
+                dura = 0;
+                for (var i = 0; i < tmp_route.legs.length; i++) {
+                    dist += tmp_route.legs[i].distance.value;
+
+                    dura += tmp_route.legs[i].duration.value;
+                }
+                FitMap();
+                $("#details").text("Distance: " + dist / 1000 + " km  Duration: " + Math.round(dura / 60) + " minutes");
+            }
+        });
+    }
+    else alert("Route plan is empty!");
+}
+
+//make ROUTE MODEL OBJECT from calcRoute result and save it in DB
+function SaveRoute() {
+    if (route != null) 
+        {
+        //create model route
+        var points = [];
+        alert("saving - points("+route.legs.length+")");
+        for (var i = 0; i < route.legs.length; i++) {
+            var tmp = route.waypoint_order[i];
+            var order = null;
+            if (i != (route.legs.length - 1)) {
+                var order = markers[tmp].title;
+            }
+            var leg = { Distance: route.legs[i].distance.value, Duration: route.legs[i].duration.value, Address: route.legs[i].end_address, OrderId: order, RoutePointId: null, RouteId: null };
+            points.push(leg);
+        }
+         var modelRoute = new Object();
+         modelRoute.RouteId = null;
+         modelRoute.RouteStatusId = null;
+         modelRoute.Duration = dura;
+         modelRoute.Distance = dist;
+         modelRoute.Owner = "";
+         modelRoute.DateAdded = null;
+         modelRoute.Car = document.getElementById("car").value;
+         modelRoute.RoutePoints = points;
+         
+         $.ajax({
+             type: 'POST',
+             url: '/Admin/Routes/Save/',
+             dataType: 'json',
+             data: JSON.stringify(modelRoute),
+             contentType: 'application/json',
+             success: function (data) {
+                 alert('saved by id: ' + data);
+                 location.reload();
+             },
+             error: function (xhr, ajaxOptions, error) {
+                 alert(xhr.status);
+                 alert('Error: ' + xhr.responseText);
+             }
+         });
+     }
+        else alert("Route is empty")
+}
+
+//geocode address and get result as callback function
+function codeAddress(address, callback) {
+    var result="haf haj";
+    geocoder.geocode({ 'address': address }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+
+            callback(results[0].geometry.location);
+           
+
+        } else {
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+
+    });
+}
+
+
+window.onload = InitializeMap;
+</script>
+
